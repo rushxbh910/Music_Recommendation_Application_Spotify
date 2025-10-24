@@ -1,0 +1,11 @@
+title,artist,year,danceability,energy,key,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,duration_ms
+Antidote,Travis Scott,2015,0.44,0.77,5,-5.2,1,0.09,0.06,0.0,0.12,0.31,150.0,258000
+See You Again (feat. Charlie Puth),Wiz Khalifa,2015,0.45,0.49,0,-7.6,1,0.04,0.39,0.0,0.11,0.35,80.0,229000
+Blinding Lights,The Weeknd,2019,0.51,0.73,6,-5.9,1,0.05,0.03,0.0,0.09,0.72,171.0,200040
+Bad Guy,Billie Eilish,2019,0.70,0.43,10,-10.0,1,0.38,0.33,0.0,0.14,0.56,135.0,194880
+Levitating,Dua Lipa,2020,0.70,0.80,6,-3.4,1,0.06,0.06,0.0,0.13,0.84,103.0,203000
+Shape of You,Ed Sheeran,2017,0.82,0.65,1,-3.2,1,0.09,0.58,0.0,0.09,0.93,96.0,234000
+Starboy,The Weeknd,2016,0.79,0.69,0,-5.7,1,0.10,0.08,0.0,0.12,0.74,186.0,230453
+Believer,Imagine Dragons,2017,0.45,0.91,7,-3.1,1,0.08,0.05,0.0,0.33,0.52,125.0,204000
+Uptown Funk,Mark Ronson,2014,0.90,0.80,5,-4.0,1,0.08,0.10,0.02,0.30,0.95,115.0,270000
+Humble.,Kendrick Lamar,2017,0.97,0.65,1,-6.2,1,0.36,0.06,0.0,0.11,0.62,150.0,177000

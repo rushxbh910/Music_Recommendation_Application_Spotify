@@ -1,167 +1,102 @@
-
 # 🎵 Spotify Music Recommendation Application
 
-A machine learning-based music recommendation system built using Spotify’s audio feature datasets and Spotipy (a lightweight Python library for the Spotify Web API). It recommends songs based on user input using clustering, dimensionality reduction, and cosine similarity on audio features.
+A modular, production-ready version of your notebook: end‑to‑end data prep, model training, and real‑time recommendations via **FastAPI** and an optional **Streamlit** UI. 
+It uses feature scaling, dimensionality reduction (PCA), **KMeans** clustering, and **cosine similarity** to recommend tracks. 
+If a track isn’t found locally, it can fall back to the **Spotify Web API** (via Spotipy) when credentials are present.
 
----
+## 🚀 Quickstart
 
-## 📚 Table of Contents
+```bash
+# 1) Create a virtual env (optional)
+python -m venv .venv && source .venv/bin/activate  # on Windows: .venv\Scripts\activate
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Data Sources](#data-sources)
-- [Dependencies](#dependencies)
-- [Configuration](#configuration)
-- [Examples](#examples)
-- [Troubleshooting](#troubleshooting)
-- [Contributors](#contributors)
-- [License](#license)
+# 2) Install dependencies
+pip install -r requirements.txt
 
----
+# 3) (Optional) Add Spotify credentials
+cp .env.example .env
+# set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET in .env
 
-## 📝 Introduction
+# 4) Train model on the sample dataset
+python scripts/train.py --data data/sample_tracks.csv --model_dir models
 
-This application analyzes Spotify song data to cluster tracks based on audio features and recommend new music based on songs a user already likes. By leveraging machine learning techniques like K-Means clustering, PCA, and t-SNE, the system understands music similarities and builds an interactive recommendation system using Spotify's API.
+# 5) Launch API
+uvicorn api.main:app --reload
 
----
-
-## ✨ Features
-
-- 🎼 Cluster music by genre and audio features using K-Means
-- 📉 Visualize data using PCA and t-SNE
-- 🔍 Analyze correlation between features and popularity
-- 🎧 Recommend similar tracks using cosine similarity
-- 🧠 Extract audio features using Spotify Web API
-- 📊 Analyze music trends by decade and genre
-
----
-
-## 💾 Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/spotify-music-recommender.git
-   cd spotify-music-recommender
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Install Spotipy**:
-   ```bash
-   pip install spotipy
-   ```
-
----
-
-## 🚀 Usage
-
-### Run the Application
-
-```python
-python app.py
+# 6) (Optional) Streamlit UI
+streamlit run app/streamlit_app.py
 ```
 
-### Recommend Songs
-
-Example:
-```python
-recommend_songs([
-    {'name': 'Antidote', 'year': 2015},
-    {'name': 'See You Again (feat. Charlie Puth)', 'year': 2015}
-], data)
-```
-
----
-
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```
-spotify-music-recommender/
-│
+spotify_recommender_project/
+├── README.md
+├── requirements.txt
+├── .env.example
 ├── data/
-│   ├── data.csv
-│   ├── data_by_genres.csv
-│   └── data_by_year.csv
-├── visualizations/
-│   └── plots and embeddings
-├── app.py
-├── recommendation.py
-├── clustering.py
-└── README.md
+│   └── sample_tracks.csv
+├── models/
+│   ├── model.joblib
+│   └── feature_spec.json
+├── src/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── data_loader.py
+│   ├── features.py
+│   ├── model.py
+│   ├── recommender.py
+│   ├── spotify_api.py
+│   └── utils.py
+├── api/
+│   └── main.py
+├── app/
+│   └── streamlit_app.py
+├── scripts/
+│   ├── train.py
+│   └── build_index.py
+├── tests/
+│   └── test_recommender.py
+└── notebooks/
+    └── (place your original .ipynb here)
 ```
 
----
+## 🧠 How it works (high-level)
 
-## 📊 Data Sources
+1. **Ingest**: Load CSV of track audio features (can be extended to multiple files).
+2. **Transform**: Standardize features → optional PCA.
+3. **Cluster**: Fit **KMeans** to learn coarse similarity buckets.
+4. **Index**: Persist the scaler, PCA, KMeans for reuse; precompute normalized vectors.
+5. **Recommend**: For one or more seed songs, compute a seed embedding and return the **top‑K nearest** by cosine similarity (optionally respecting clusters).
+6. **Fallback to Spotify**: If seed not found locally and credentials exist, query Spotify API for audio features.
 
-- `data.csv`: Main Spotify dataset with ~170,000 tracks
-- `data_by_genres.csv`: Aggregated audio features by genre
-- `data_by_year.csv`: Aggregated audio features by year
+## 🧪 Sample request
 
----
-
-## 📦 Dependencies
-
-- Python 3.x
-- pandas
-- numpy
-- seaborn
-- matplotlib
-- plotly
-- scikit-learn
-- yellowbrick
-- spotipy
-- scipy
-
----
-
-## ⚙️ Configuration
-
-1. **Set up Spotify Developer Credentials**:
-
-Create an app at [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/).
-
-Set the environment variables in your script:
-```python
-os.environ["SPOTIFY_CLIENT_ID"] = "your_client_id"
-os.environ["SPOTIFY_CLIENT_SECRET"] = "your_client_secret"
+```
+GET http://localhost:8000/recommend?title=Antidote&year=2015&k=5
 ```
 
----
+## 🛡️ Notes
 
-## 🧪 Examples
+- The sample data is tiny (for demo only). Replace `data/sample_tracks.csv` with your dataset.
+- The API and UI will automatically use saved artifacts from `models/` if present.
+- Put your notebook into `notebooks/` for reference (not required to run the app).
 
-### Grunge Music Recommendations
-```python
-recommend_songs([
-    {'name': 'Come As You Are', 'year':1991},
-    {'name': 'Smells Like Teen Spirit', 'year': 1991},
-    {'name': 'Lithium', 'year': 1992},
-    {'name': 'All Apologies', 'year': 1993},
-], data)
-```
-
-Returns similar tracks such as:
-- *Hanging By A Moment* – Lifehouse
-- *Otherside* – Red Hot Chili Peppers
-- *No Excuses* – Alice In Chains
 
 ---
 
-## 🛠 Troubleshooting
+## 🧩 Using your uploaded datasets
 
-- **Missing songs**: If a song isn't found in the local dataset, the app queries the Spotify API directly.
-- **Rate Limiting**: If using the Spotify API too frequently, you may need to wait due to rate limits.
-- **Cluster Mislabeling**: Ensure your features are correctly scaled before clustering.
+Your CSVs were added to `data/`:
 
----
+- `data.csv`, `data_by_artist.csv`, `data_by_genres.csv`, `data_by_year.csv`, `data_w_genres.csv` (if you uploaded them here)
 
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+You can either:
+1) **Pick any CSV directly in the Streamlit UI**, or
+2) **Normalize/merge multiple files** into one canonical file:
+   ```bash
+   python scripts/ingest.py --inputs data/data.csv data/data_by_artist.csv data/data_by_genres.csv data/data_by_year.csv data/data_w_genres.csv \
+                           --output data/tracks_canonical.csv
+   python scripts/train.py --data data/tracks_canonical.csv --model_dir models
+   ```
+The ingestion step tolerates different column names and tries to canonicalize to the schema used by this app.

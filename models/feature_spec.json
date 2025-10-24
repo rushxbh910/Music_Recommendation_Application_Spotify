@@ -1,0 +1,19 @@
+{
+  "use_pca": true,
+  "pca_components": 8,
+  "feature_columns": [
+    "danceability",
+    "energy",
+    "key",
+    "loudness",
+    "mode",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "duration_ms"
+  ],
+  "n_clusters": 12
+}
