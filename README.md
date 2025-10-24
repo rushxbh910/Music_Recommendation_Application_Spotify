@@ -1,6 +1,6 @@
 # 🎵 Spotify Music Recommendation Application
 
-A modular, production-ready version of your notebook: end‑to‑end data prep, model training, and real‑time recommendations via **FastAPI** and an optional **Streamlit** UI. 
+A modular, production-ready, end‑to‑end data prep, model training, and real‑time recommendations via **FastAPI** and an optional **Streamlit** UI. 
 It uses feature scaling, dimensionality reduction (PCA), **KMeans** clustering, and **cosine similarity** to recommend tracks. 
 If a track isn’t found locally, it can fall back to the **Spotify Web API** (via Spotipy) when credentials are present.
 
@@ -58,7 +58,7 @@ spotify_recommender_project/
 ├── tests/
 │   └── test_recommender.py
 └── notebooks/
-    └── (place your original .ipynb here)
+    └── Spotify_Music_Recommendation_Application.ipynb
 ```
 
 ## 🧠 How it works (high-level)
@@ -87,9 +87,9 @@ GET http://localhost:8000/recommend?title=Antidote&year=2015&k=5
 
 ## 🧩 Using your uploaded datasets
 
-Your CSVs were added to `data/`:
+CSVs added to `data/`:
 
-- `data.csv`, `data_by_artist.csv`, `data_by_genres.csv`, `data_by_year.csv`, `data_w_genres.csv` (if you uploaded them here)
+- `data.csv`, `data_by_artist.csv`, `data_by_genres.csv`, `data_by_year.csv`, `data_w_genres.csv`
 
 You can either:
 1) **Pick any CSV directly in the Streamlit UI**, or
